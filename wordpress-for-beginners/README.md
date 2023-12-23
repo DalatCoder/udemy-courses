@@ -165,3 +165,9 @@ Because not everything will work the same as a web host install
 - Moving to host: not all free tools offer the ability to move the local site to a web host.
 
 ### Install Local by Flywheel
+
+### Other options
+
+- MAMP & MAMP pro
+- ServerPress
+- XAMPP
