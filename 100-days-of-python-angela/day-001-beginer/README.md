@@ -91,3 +91,27 @@ See how the computer execute code step by step
 ```
 
 ## Variable naming
+
+- Make our code readable
+- The name of the variable has to be 1 single unit
+- To seperate words in Python, we use the `_`
+
+```py
+    user_name = input("What is your name?")
+```
+
+## Project: Band Name Generator
+
+- User types in the name of the city and the name of their pet
+- The program combines those things and print the band name
+
+```py
+    print("Welcome to the Band Name Generator.")
+
+    city = input("Which city did your grow up in?\n")
+    pet = input("What is the name of a pet?\n")
+
+    band_name = city + " " + pet
+
+    print("Your band name could be " + band_name)
+```
