@@ -1,6 +1,18 @@
-# Day 1 - Beginner - Working with Variables in Python to Manage data
+# 1. Day 1 - Beginner - Working with Variables in Python to Manage data
 
-Overview:
+- [1. Day 1 - Beginner - Working with Variables in Python to Manage data](#1-day-1---beginner---working-with-variables-in-python-to-manage-data)
+  - [1.1. Overview](#11-overview)
+  - [1.2. Day 1 goals](#12-day-1-goals)
+  - [1.3. Printing to the Console in Python](#13-printing-to-the-console-in-python)
+  - [1.4. String manipulation and code intelligence](#14-string-manipulation-and-code-intelligence)
+  - [1.5. The Python input function](#15-the-python-input-function)
+  - [1.6. Thonny application](#16-thonny-application)
+  - [1.7. Commenting code](#17-commenting-code)
+  - [1.8. Python variables](#18-python-variables)
+  - [1.9. Variable naming](#19-variable-naming)
+  - [1.10. Project: Band Name Generator](#110-project-band-name-generator)
+
+## 1.1. Overview
 
 - API
 - GUI dev
@@ -18,7 +30,7 @@ Ways to learn code:
 - Interactive coding exercises
 - Real world projects
 
-## Day 1 goals
+## 1.2. Day 1 goals
 
 - Printing
 - Commenting
@@ -29,7 +41,7 @@ Ways to learn code:
 
 [Source code online](https://replit.com/@appbrewery/band-name-generator-end)
 
-## Printing to the Console in Python
+## 1.3. Printing to the Console in Python
 
 ```py
 print("Hello world!")
@@ -39,7 +51,7 @@ print("Hello world!")
 - `string`: a string of characters
 - the `"` shows the beginning and the end of the string of characters
 
-## String manipulation and code intelligence
+## 1.4. String manipulation and code intelligence
 
 - Use newline character `\n`
 - Combine 2 strings using `+` operator
@@ -48,7 +60,7 @@ print("Hello world!")
     print("Hello" + " " + "world!")
 ```
 
-## The Python input function
+## 1.5. The Python input function
 
 ```py
     input("What is your name?")
@@ -56,17 +68,17 @@ print("Hello world!")
 
 - `input` function: allows user to type some text into our program
 
-## Thonny application
+## 1.6. Thonny application
 
 See how the computer execute code step by step
 
-## Commenting code
+## 1.7. Commenting code
 
 ```py
     # This is a comment
 ```
 
-## Python variables
+## 1.8. Python variables
 
 - Store something into a variable to refer it later
 
@@ -90,7 +102,7 @@ See how the computer execute code step by step
     print(name)
 ```
 
-## Variable naming
+## 1.9. Variable naming
 
 - Make our code readable
 - The name of the variable has to be 1 single unit
@@ -100,7 +112,7 @@ See how the computer execute code step by step
     user_name = input("What is your name?")
 ```
 
-## Project: Band Name Generator
+## 1.10. Project: Band Name Generator
 
 - User types in the name of the city and the name of their pet
 - The program combines those things and print the band name
