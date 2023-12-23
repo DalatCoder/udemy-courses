@@ -171,3 +171,59 @@ Because not everything will work the same as a web host install
 - MAMP & MAMP pro
 - ServerPress
 - XAMPP
+
+## Section 3: Installing Wordpress on a web host
+
+### Finding the domain
+
+- Don't use an EMD (exact match domain): the keyword you want to rank for is your domain name
+- Catchy & Brandable (Your name?)
+- Check if the domain is available: using domainpunch.com
+- Check the domain's history at WayBackMachine
+
+### Installing WP on a web host
+
+Web host: The company that provides you with server space to host your site, making it available 24/7
+and taking care of technical aspects of hosting.
+
+Registar: The company that looks after your domain name for you. They'll keep it safe and make sure it
+renews every year, based on your instruction.
+
+- Option 1: Use the web host as your registrar: this is quicker to setup, but has some disadvantages
+
+- Option 2: Use a seperate web host and registrar:
+This is my preferred option. It may look more technical, but it really isn't. It
+does mean you deal with 2 companies instead of one, but that is also an advantage.
+
+Why seperate host & registrar?
+
+- Too much power:
+  If one company controls your domain and hosting, they have too much power. Any dispute can leave your site down
+  and you locked out of your cPanel until resolved. With separate host and registrar, you can move your site away by
+  simply changing the DNS.
+
+- Added security:
+  If a hacker breaks into your hosting server, what is to stop them.
+  stealing your doamin too? They have access to everything they need to transfer your domain to their own registrar.
+
+- Manage all domains in one place:
+  Even if you only intend to buy one domain, things may change in the future. It is more convenient
+  to manage all of your domains in one easy to use interface.
+
+Installing WP on a web host
+
+- Buy domain: buy your domain name at Registrar, the author use NameCheap
+- Get hosting: buy hosting, the author use BlueHost
+- Connect domain to hosting: change the DNS at your registrar to the ones your host gives you
+- Wait: this can take time to propagate around the world, so you may need to wait a few hours
+- Install WP: when you see your host holding page on your domain, you can install WP
+
+### Deactivate cache
+
+- Settings
+- General
+- Set Endurance cache to Normal (Level 2)
+
+Or
+
+- Locate to wp-content/mu-plugins and rename the file called endurance-page-cache.php to anything else
