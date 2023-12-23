@@ -128,17 +128,17 @@ Course curriculum:
 - Wordpress comments
 - Wordpress security
 
-## Which Wordpress?
+### Which Wordpress?
 
 - Wordpress.com
 - Wordpress.org
 
-## WP Dashboard
+### WP Dashboard
 
 The dashboard is the area behind the scenes that you go to, to create your content, to add plugins, to customize your theme, to work
 on your website whenever you want to work on your website.
 
-## Where to install Wordpress?
+### Where to install Wordpress?
 
 - On your own computer
 - On a web host
@@ -149,3 +149,19 @@ Free options for local install
 - Serverpress
 - XAMPP
 - MAMP
+
+## Local install - Install wordpress on your computer
+
+### Local install issues
+
+Because not everything will work the same as a web host install
+
+- Security plugins: these are designed to ork in an online environment, so may not work
+  properly on a local install. E.g. WordFence, All in one security, Stop spammers
+- Caching plugins: designed to work on a host, so can cause problenms. E.g. LiteSpeed, W3 Total Cache.
+- Contact form: require a mail server to work locally. Most tools won't install on by default
+  so you cannot test the contact form in a local install.
+- Yoast SEO: most of this will work fine locally, but the Sitemap feature won't work on a Local install
+- Moving to host: not all free tools offer the ability to move the local site to a web host.
+
+### Install Local by Flywheel
