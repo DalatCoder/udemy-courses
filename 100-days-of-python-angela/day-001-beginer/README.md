@@ -34,7 +34,7 @@ Ways to learn code:
 
 - Printing
 - Commenting
-- Debygging
+- Debugging
 - String manipulation
 - Variables
 - Project: Band name generator
