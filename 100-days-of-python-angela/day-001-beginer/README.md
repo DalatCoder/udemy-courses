@@ -67,3 +67,27 @@ See how the computer execute code step by step
 ```
 
 ## Python variables
+
+- Store something into a variable to refer it later
+
+```py
+    name = input("What is your name?")
+
+    # refer to name variable
+    print(name)
+```
+
+- The variable can be changed
+
+```py
+    name = input("What is your name?")
+
+    # refer to name variable
+    print(name)
+
+    # change the variable
+    name = "Hieu"
+    print(name)
+```
+
+## Variable naming
