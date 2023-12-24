@@ -24,6 +24,8 @@ Goals:
 
 [Source](day-001-beginer/main.py)
 
+![Project](day-001-beginer/project.png)
+
 ## 2. Day 2 - Beginner - Understanding data types and how to manipulate strings
 
 Goals:
@@ -39,3 +41,5 @@ Goals:
 [Note](day-002-beginer/README.md)
 
 [Source](day-002-beginer/main.py)
+
+![Project](day-002-beginer/project.png)
