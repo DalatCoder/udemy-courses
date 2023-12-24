@@ -77,3 +77,20 @@
     c = float(a)
     print(c)
 ```
+
+## Mathematical operations in Python
+
+- Addition: +
+- Subtraction: -
+- Multiplication: *
+- Division: /, result in floating point number
+- Exponent: **
+
+The order of mathematical operator execution: `PEMDAS`
+
+- Parentheses
+- Exponents
+- Multiplication
+- Division
+- Addition
+- Subtraction
