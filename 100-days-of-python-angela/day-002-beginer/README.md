@@ -40,3 +40,40 @@
     print(a)
     print(b)
 ```
+
+## Type error, Type checking and Type conversion
+
+- Type error: can only concatenate `str` to `str`
+
+```py
+    num_char = len(input("What is your name? "))
+    print("Your name has " + num_char + " characters.")
+```
+
+- Perform type checking with `type` function
+
+```py
+    num_char = len(input("What is your name? "))
+    print(type(num_char))
+```
+
+- Type conversion (type casting), change value from 1 type to another type
+
+```py
+    num_char = len(input("What is your name? "))
+    new_num_char = str(num_char)
+    print("Your name has " + new_num_char + " characters.")
+```
+
+- Type conversion, more examples
+
+```py
+    a = 123
+    print(type(a))
+
+    b = str(a)
+    print(type(b))
+
+    c = float(a)
+    print(c)
+```
