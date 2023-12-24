@@ -1,10 +1,10 @@
 # 1. Day 2 - Beginner - Understanding data types and how to manipulate strings
 
-## Day 2 goals
+## 1.1. Day 2 goals
 
 - Project: Tip calculator
 
-## Python primitive data types
+## 1.2. Python primitive data types
 
 - `string`: string of characters
 - subscript a string with `[]`: `str[0]`
@@ -41,7 +41,7 @@
     print(b)
 ```
 
-## Type error, Type checking and Type conversion
+## 1.3. Type error, Type checking and Type conversion
 
 - Type error: can only concatenate `str` to `str`
 
@@ -78,7 +78,7 @@
     print(c)
 ```
 
-## Mathematical operations in Python
+## 1.4. Mathematical operations in Python
 
 - Addition: +
 - Subtraction: -
@@ -95,7 +95,7 @@ The order of mathematical operator execution: `PEMDAS`
 - Addition
 - Subtraction
 
-## Number manipulation and F strings in Python
+## 1.5. Number manipulation and F strings in Python
 
 - To round the number, we use the `round` function
 
@@ -129,7 +129,7 @@ The order of mathematical operator execution: `PEMDAS`
     print(f"Your score is {score}, your height is {height}, you are winning is {isWinning}")
 ```
 
-## Day 2 Project: Tip Calculator
+## 1.6. Day 2 Project: Tip Calculator
 
 ```py
 print("Welcome to the Tip Calculator.")
