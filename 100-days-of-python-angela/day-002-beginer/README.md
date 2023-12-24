@@ -128,3 +128,20 @@ The order of mathematical operator execution: `PEMDAS`
     # f-String
     print(f"Your score is {score}, your height is {height}, you are winning is {isWinning}")
 ```
+
+## Day 2 Project: Tip Calculator
+
+```py
+print("Welcome to the Tip Calculator.")
+
+bill = float(input("What was the total bill? $"))
+tip = int(input("What percentage tip would you like to give? 10, 12, or 15? "))
+people = int(input("How many people to split the bill? "))
+
+bill_with_tip = bill + (bill * (tip / 100))
+bill_per_person /= number
+
+final_amount = "{:.2f}".format(bill_per_person)
+
+print(f"Each person should pay: ${final_amount}")
+```
