@@ -94,3 +94,37 @@ The order of mathematical operator execution: `PEMDAS`
 - Division
 - Addition
 - Subtraction
+
+## Number manipulation and F strings in Python
+
+- To round the number, we use the `round` function
+
+```py
+    print(round(8 / 3))
+    print(round(8 / 3, 2)) # 2 decimal places
+```
+
+- `mod` operator, get only `integer`
+
+```py
+    print(8 // 3) # 2
+```
+
+- `div` operator
+
+```py
+    print(8 % 3) # 2
+```
+
+- Using `f-String` to mix strings and different data types
+
+```py
+    score = 10
+    height = 1.8
+    isWinning = True
+
+    print("Your score is " + str(score))
+
+    # f-String
+    print(f"Your score is {score}, your height is {height}, you are winning is {isWinning}")
+```
