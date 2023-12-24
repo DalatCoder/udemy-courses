@@ -34,6 +34,7 @@ Goals:
 - Number manipulation
 - f-string
 - Format function
+- Project: Tip Calculator
 
 [Note](day-002-beginer/README.md)
 
