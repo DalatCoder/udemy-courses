@@ -57,6 +57,10 @@ Bound and standalone apps can also be published to expose more broadly:
 
 ### App Script Power Example
 
+- Create new Google Docs
+- Append to it some content
+- Send notification email with the link of the Docs
+
 ```js
     function myFunction() {
         // create new google docs and append some content
@@ -70,4 +74,67 @@ Bound and standalone apps can also be published to expose more broadly:
         var bodyEmail = 'This is the new doc = ' + doc.getUrl();
         GmailApp.sendEmail(email, subject, bodyEmail); 
     }
+```
+
+### First Script using online IDE and Google Script
+
+First script:
+
+- Debugging and running script
+- Project properties under File
+
+Classes - Apps Script
+
+- Listing of services starting with the Calendar Service
+- Each service has classes, attribute and methods associated with them
+- [Doc](https://developers.google.com/apps-script/reference)
+
+Document App
+
+- Properties and methods within the DocumentApp class
+- Create document within scripts
+- Review options for documents
+- [Doc](https://developers.google.com/apps-script/reference/document)
+
+Create new function
+
+```js
+function firstapp() {
+    var welcomemessage = 'hello world';
+}
+```
+
+Loop & Log
+
+```js
+function firstapp() {
+    var welcomemessage = 'hello world';
+
+    for (var x = 0; x < 10; x++) {
+        Logger.log(welcomeMessage);
+    }
+}
+```
+
+Getting started with Calendar service
+
+- [Doc](https://developers.google.com/apps-script/reference/calendar)
+
+Getting started with Document service
+
+- [Doc](https://developers.google.com/apps-script/reference/document)
+
+- DocumentApp class
+- Methods: create, getActiveDocument(),...
+
+```js
+function createDoc() {
+    // create new document (Google Doc)
+    var doc = DocumentApp.create('New Test Doc');
+}
+
+function updateDoc() {
+    var doc = DocumentApp.openById('document_id');
+    Logger.log(doc.getName());
+}
 ```
