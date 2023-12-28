@@ -43,3 +43,31 @@ There are 2 types of scripts:
 
 - `bound`: it's forever (and only) tied to one Google document (Doc, Sheet, Slide, Site, or Form)
 - `standalone`: an independent script not tied to any G Suite documents
+
+### Publishing Scripts
+
+Bound and standalone apps can also be published to expose more broadly:
+
+- Not published - remains private, acessible only to project owners
+- Published as an add-on - your app can be installed from the add-on store
+- Published as web app - your app handles HTTP request and has web UI components
+- Embedded in Google Sites - published web apps can be embedded in either the new Sites or classic Sites pages
+- Published as an API executable - your app can be accessed through the Execution API
+- Some valid combination of the above
+
+### App Script Power Example
+
+```js
+    function myFunction() {
+        // create new google docs and append some content
+        var doc = DocumentApp.create('New Doc');
+        var body = doc.getBody();
+        body.appendParagraph('Hello World');
+
+        // send email
+        var email = Session.getActiveUser().getEmail();
+        var subject = doc.getName();
+        var bodyEmail = 'This is the new doc = ' + doc.getUrl();
+        GmailApp.sendEmail(email, subject, bodyEmail); 
+    }
+```
