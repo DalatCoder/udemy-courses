@@ -172,3 +172,78 @@ function getDoc() {
     body.appendParagraph(spanish);
 }
 ```
+
+Document Body Contents
+
+```js
+function getParagraph() {
+    var doc = DocumentApp.openById('...');
+    var body = doc.getBody();
+
+    // get first paragraph
+    var paragraph1 = body.getChild(0);
+
+    Logger.log(paragraph1.getText());
+
+    // change text
+    paragraph1.setText('CHANGED');
+    paragraph1.setFontSize(50);
+}
+```
+
+### Document Body
+
+Document Body Updates
+
+```js
+function getParagraph() {
+    var doc = DocumentApp.openById('...');
+    var body = doc.getBody();
+
+    var paraList = body.getParagraphs();
+    Logger.log(paraList[0].getText());
+    paraList[0].appendText('Append');
+
+    var a = paraList[0].getAttributes();
+    Logger.log(a);
+}
+```
+
+Get & set attributes
+
+```js
+function getParagraph() {
+    var doc = DocumentApp.openById('...');
+    var body = doc.getBody();
+
+    var paraList = body.getParagraphs();
+    Logger.log(paraList[0].getText());
+    paraList[0].appendText('Append');
+
+    var a = paraList[0].getAttributes();
+    Logger.log(a);
+
+    var style = {}
+    style[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
+    paraLIst[0].setAttributes(style);
+}
+```
+
+Document body children
+
+```js
+function getParagraph() {
+    var doc = DocumentApp.openById('...');
+    var body = doc.getBody();
+
+    Logger.log(body.getNumChildren());
+
+    for (var x = 0; x < body.getNumChildren(); x++) {
+        var el = body.getChild(x);
+
+        if (el.getType() == 'PARAGRAPH') {
+            Logger.log(el.getText());
+        }
+    }
+}
+```
