@@ -318,6 +318,11 @@ Some useful hooks:
 Get user interface and makes change to the UI
 
 - `getUi()`
+- Add alert with `ui.alert()`
+
+Access current session and get some user information
+
+- `Session.getActiveUser().getEmail()`
 
 ```js
 // bound script
@@ -337,22 +342,40 @@ function onOpen() {
 }
 
 function myFunc1() {
-    Logger.log('First was run');
+    var ui = DocumentApp.getUi();
+    ui.alert('Function #1');
+
+    var result = ui.alert('Are you logged in?', ui.ButtonSet.YES_NO_CANCEL);
+    ui.alert('You responded with ' + result);
 }
 
 function myFunc2() {
-    Logger.log('First was run');
+    Logger.log('Function #2');
+    var email = Session.getActiveUser().getEmail();
+
+    var ui = DocumentApp.getUi();
+    ui.alert('Your email ' + email);
 }
 
 function myFunc3() {
-    Logger.log('First was run');
+    Logger.log('Function #3');
+    var ui = DocumentApp.getUi();
+    var response = ui.prompt('Getting to know you', 'May I know your name?', ui.ButtonSet.YES_NO);
+
+    ui.alert('Your name ' + response.getResponseText());
 }
 
 function myFunc4() {
-    Logger.log('First was run');
+    Logger.log('Function #4');
+    var locale = Session.getActiveUserLocale();
+    var timezone = Session.getScriptTimeZone();
+
+    var ui = DocumentApp.getUi();
+    ui.alert('Your locale ' + locale);
+    ui.alert('Your timezone ' + timezone);
 }
 
 function myFunc5() {
-    Logger.log('First was run');
+    Logger.log('Function #5');
 }
 ```
