@@ -138,3 +138,37 @@ function updateDoc() {
     Logger.log(doc.getName());
 }
 ```
+
+## Section 3: Google DocumentApp
+
+### Explore Document - Class `DocumentApp`
+
+- Open: `DocumentApp.openById()`
+- Get body object: `doc.getBody()`
+- Add some content: `body.appendParagraph('content')`
+
+```js
+var doc = DocumentApp.openById('...');
+var body = doc.getBody();
+body.appendParagraph('Content');
+body.appendPageBreak();
+```
+
+Get Document Content
+
+```js
+function getDoc() {
+    var doc = DocumentApp.openById('...');
+    var body = doc.getBody();
+
+    var selection = body.getText();
+    Logger.log(selection);
+
+    // translate
+    var spanish = LanguageApp.translate(selection, 'en', 'es');
+    Logger.log(spanish);
+
+    // append
+    body.appendParagraph(spanish);
+}
+```
