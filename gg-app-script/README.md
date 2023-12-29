@@ -319,10 +319,19 @@ Get user interface and makes change to the UI
 
 - `getUi()`
 - Add alert with `ui.alert()`
+- Add prompt
+- Add dialog with custom HTML
+
+HTMLService
+
+- Raw string: `createHtmlOutut(string)`
+- From HTML file: `createHtmlOutputFromFile(index)` (index.html)
 
 Access current session and get some user information
 
 - `Session.getActiveUser().getEmail()`
+- Get locale
+- Get time zone
 
 ```js
 // bound script
@@ -377,5 +386,79 @@ function myFunc4() {
 
 function myFunc5() {
     Logger.log('Function #5');
+
+    var htmlOutput = HtmlService
+        .createHtmlOutput('<p>A change of speed, a change of style...</p>')
+        .setWidth(250)
+        .setHeight(300);
+
+    DocumentApp.getUi().showModalDialog(htmlOutput, 'My add-on');
 }
+```
+
+Get the document to which this script is bound
+
+- Get current document
+- Jump to the position of the cursor
+- Insert some text
+
+```js
+function myFunction() {
+    var doc = DocumentApp.getActiveDocument();
+    var cursor = doc.getCursor(); 
+
+    cursor.insertText(Date());
+
+    var docId = doc.getId();
+    Logger.log(docId);
+}
+```
+
+Get selection and do something with it
+
+```js
+    var selection = DocumentApp.getActiveDocument().getSelection();
+    if (!selection) {
+        return
+    }
+
+    var el = selection.getRangeElements();
+    DocumentApp.getUi().alert('Number of selected elements ' + el.length);
+
+    for (var x = 0; x < el.length; x++) {
+        if (el[x].getElement().editAsText) {
+            var holder = el[x].getElement().editAsText();
+
+            if (el[x].isPartial()) {
+                holder.setBold(el[x].getStartOffset(), el[x].getEndOffsetInclusive() true);
+            } else {
+                holder.setBold(true);
+            }
+        }
+    }
+
+```
+
+Translate the selection text
+
+```js
+    var selection = DocumentApp.getActiveDocument().getSelection();
+    if (!selection) {
+        return
+    }
+
+    var el = selection.getRangeElements();
+    DocumentApp.getUi().alert('Number of selected elements ' + el.length);
+
+    var output = '';
+
+    for (var x = 0; x < el.length; x++) {
+        if (el[x].getElement().editAsText) {
+            var holder = el[x].getElement().editAsText();
+            output += holder.getText();
+        }
+    }
+
+    var spanish = LanguageApp.translate(output, 'en', 'es');
+    DocumentApp.getUi().alert('Translated to Spanish: ' + spanish);
 ```
