@@ -300,3 +300,59 @@ function copyDoc() {
     }
 }
 ```
+
+### DocumentApp Bound Script
+
+Script that bounds to a specific application.
+
+To create a Google Doc Script:
+
+- Open Google Doc
+- Menu Tool > Script
+- Write bound script
+
+Some useful hooks:
+
+- `onOpen`: fire when the associated doc open
+
+Get user interface and makes change to the UI
+
+- `getUi()`
+
+```js
+// bound script
+function onOpen() {
+    Logger.log('Document is just opened');
+
+    // change UI 
+    DocumentApp.getUi()
+        .createMenu('Advanced')
+        .addItem('One', 'myFunc1')
+        .addItem('Tne', 'myFunc2')
+        .addSeperator()
+        .addItem('Three', 'myFunc3')
+        .addItem('Four', 'myFunc4')
+        .addItem('Five', 'myFunc5')
+        .addToUi();
+}
+
+function myFunc1() {
+    Logger.log('First was run');
+}
+
+function myFunc2() {
+    Logger.log('First was run');
+}
+
+function myFunc3() {
+    Logger.log('First was run');
+}
+
+function myFunc4() {
+    Logger.log('First was run');
+}
+
+function myFunc5() {
+    Logger.log('First was run');
+}
+```
