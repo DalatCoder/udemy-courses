@@ -247,3 +247,27 @@ function getParagraph() {
     }
 }
 ```
+
+### Document classes and methods
+
+```js
+var doc = DocumentApp.openById('...');
+var body = doc.getBody();
+
+var att = {
+    'FOREGROUND_COLOR': '#ffff00',
+    'BOLD': true
+}
+
+for (var x = 0; x < body.getNumChildren(); x++) {
+    var el = body.getChild(x);
+    el.setAttributes(att);
+
+    var text = el.editAsText();
+    Logger.log(text.length);
+
+    // dynamic style
+    // text.setForegroundColor(0, text.getText().length/2, '#FF0000');
+    // text.setBackgroundColor(text.getText().length/2, text.getText().length-1, '#FF0000');
+}
+```

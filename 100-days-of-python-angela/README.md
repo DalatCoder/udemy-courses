@@ -20,11 +20,11 @@ Goals:
 - Variables
 - Project: Band name generator
 
-[Note](day-001-beginer/README.md)
+[Note](day-001-beginner/README.md)
 
-[Source](day-001-beginer/main.py)
+[Source](day-001-beginner/main.py)
 
-![Project](day-001-beginer/project.png)
+![Project](day-001-beginner/project.png)
 
 ## 2. Day 2 - Beginner - Understanding data types and how to manipulate strings
 
@@ -38,8 +38,8 @@ Goals:
 - Format function
 - Project: Tip Calculator
 
-[Note](day-002-beginer/README.md)
+[Note](day-002-beginner/README.md)
 
-[Source](day-002-beginer/main.py)
+[Source](day-002-beginner/main.py)
 
-![Project](day-002-beginer/project.png)
+![Project](day-002-beginner/project.png)
