@@ -271,3 +271,32 @@ for (var x = 0; x < body.getNumChildren(); x++) {
     // text.setBackgroundColor(text.getText().length/2, text.getText().length-1, '#FF0000');
 }
 ```
+
+### Simple Copy Doc Script
+
+```js
+function copyDoc() {
+    var srcDoc = DocumentApp.openById('...');
+    var tarDoc = DocumentApp.openById('...');
+
+    var srcDocTotal = srcDoc.getNumChildren();
+    var tarDocBody = tarDoc.getBody();
+
+    // clear content | get blank page
+    tarDocBody.clear();
+    tarDocBody.appendParagraph('Last Updated ' + Date()).setFontSize(8).appendHorizontalRule();
+
+    for (var x = 0; x < srcDocTotal; x++) {
+        var el = srcDoc.getChild(x).copy();
+        var elType = el.getType();
+
+        if (elType == DocumentApp.ElementType.PARAGRAPH) {
+            tarDocBody.appendParagraph(el);
+        } else if (elType == DocumentApp.ElementType.LIST_ITEM) {
+            tarDocBody.appendListItem(el);
+        } else if (elType == DocumentApp.ElementType.TABLE) {
+            tarDocBody.appendTable(el);
+        }
+    }
+}
+```
