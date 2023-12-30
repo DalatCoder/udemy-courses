@@ -789,3 +789,31 @@ function myFunction() {
   sheet1.copyTo(newSpreadSheet);
 }
 ```
+
+### Bound Spreadsheet App
+
+- Get active spreadsheet: `SpreadSheetApp.getActiveSpreadSheet()`
+- Get active sheet on the spreadsheet: `activeSpreadSheet.getActiveSheet()`
+
+```js
+function myFunction() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getActiveSheet();  
+}
+```
+
+### Create customized function with bound script
+
+- Define customized function
+- Enter new formula in SpreadSheet app
+
+```js
+function TIMES5(input) {
+  return input * 5;
+}
+
+function ISEMAIL(input) {
+  var re = /\S+@\S+.\S+/;
+  return re.test(input);
+}
+```
