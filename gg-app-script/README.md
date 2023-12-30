@@ -986,3 +986,43 @@ function doPost() {
 - Deploy as Web App
 - `{URL}/exec`: prod
 - `{URL}/dev`: dev
+
+## Google Drive App
+
+### Google DriveApp Class
+
+It allows you to access and modify files and folders on the Google Drive.
+
+Get list of files in the `root` folder and iterate throught list
+
+```js
+function myFunction() {
+  var files = DriveApp.getFiles();  
+  var temp = [];
+
+  while(files.hasNext()) {
+    var file = files.next()
+    temp.push(file.getName());
+  }
+
+  Logger.log(temp);
+}
+```
+
+### Select folder by ID
+
+```js
+function myFunction() {
+  var folder = DriveApp.getFolderById('1s4oDuyNzGx3qlWARDfRgfaQJROeagfOa');
+  var files = folder.getFiles();
+
+  var temp = [];
+  while(files.hasNext()) {
+    var file = files.next();
+
+    temp.push(file.getName());
+  }
+
+  Logger.log(temp);
+}
+```
