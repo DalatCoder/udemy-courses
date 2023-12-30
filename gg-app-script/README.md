@@ -881,3 +881,52 @@ function myFunction3() {
   var response = ui.showSidebar(html);
 }
 ```
+
+### Get selected content
+
+- Get selected range
+- Get values
+- Display notation of the selected range
+
+```js
+function myFunction() {
+    var ss = SpreadsheetApp.getActiveSpreadsheet().getActiveRange();
+    ss.getA1Notation();
+    ss.getValues();
+}
+```
+
+### Exercise: Move selected row to another sheet
+
+```js
+function onOpen(e) {
+  SpreadsheetApp
+    .getUi() 
+    .addItem('Copy Selected Row', 'myFunction4')
+    .addToUi();
+}
+
+function myFunction4() {
+  var spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
+  if (!spreadSheet) {
+    return
+  }
+
+  var sheet = spreadSheet.getActiveSheet();
+  if (!sheet) {
+    return
+  }
+
+  var sRange = sheet.getActiveRange();
+  if (!sRange) {
+    return
+  }
+
+  var rows = sRange.getValues();
+  
+  var newSheet = spreadSheet.insertSheet();
+  for (var x = 0; x < rows.length; x++) {
+    newSheet.appendRow(rows[x]);
+  }
+}
+```
