@@ -1478,3 +1478,86 @@ function doUpload(postData) {
     }
 </script>
 ```
+
+### Send image to Google script
+
+Setup form on client side
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container">
+
+      <h1 class="my-5">Image Uploader</h1>
+
+      <form id='form'>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Select picture</label>
+          <input class="form-control" type="file" id="formFile" name="file">
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-submit">Submit</button>
+      </form>
+
+      <hr />
+      <p id="output"></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <script>
+      var output = document.getElementById('output');
+      var formEl = document.getElementById('form');
+
+      document.getElementById('btn-submit').addEventListener('click', function(e) {
+        e.preventDefault();
+        output.innerHTML = 'Clicked';
+
+        // invoke backend function
+        google.script.run
+          .withSuccessHandler(onSuccess)
+          .doUpload(formEl);
+      });
+
+      function onSuccess(data) {
+        output.innerHTML = JSON.stringify(data);
+      }
+    </script>
+  </body>
+</html>
+```
+
+Handle save upload image on server side
+
+```js
+function doGet() {
+  var template = HtmlService.createTemplateFromFile('index');
+
+  template.foo = 'Hello World!!!';
+  return template.evaluate();
+}
+
+function doUpload(postData) {
+  var fileImage = postData.file;
+  var folder = DriveApp.getFolderById('1G6A03nit31NfGt7Fb03Nrsp0pBqzswW-');
+  var image = folder.createFile(fileImage);
+
+  var response = {
+    'url': image.getUrl(),
+    'status': 'success'
+  };
+
+  return response;
+}
+```
