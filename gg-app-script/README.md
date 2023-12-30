@@ -1078,3 +1078,26 @@ function myFunction() {
   sheet.appendRow([`Last run on: ${Date()}`]);
 }
 ```
+
+### Create new file and move it
+
+- Default path is `root` folder
+- Using GGDrive app to move the file to another folder
+
+```js
+function myFunction() {
+  var pFolder = DriveApp.getFolderById('1wetedDBJLVA2Vuiaf74wm1q0kgx95VDl');
+
+  var newDocName = 'Test Doc';
+  var newDoc = DocumentApp.create(newDocName);
+  var newDocId = newDoc.getId();
+
+  newDoc.saveAndClose();
+
+  var file = DriveApp.getFileById(newDocId);
+
+  var rootFolder = file.getParents();
+  pFolder.addFile(file);
+  rootFolder.next().removeFile(file);
+}
+```
