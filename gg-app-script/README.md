@@ -1026,3 +1026,29 @@ function myFunction() {
   Logger.log(temp);
 }
 ```
+
+### Create new stuff
+
+Create new folder
+
+```js
+function myFunction() {
+  var pFolder = DriveApp.getFolderById('1s4oDuyNzGx3qlWARDfRgfaQJROeagfOa');
+  var newFolder = pFolder.createFolder('Test Folder');
+
+  Logger.log(newFolder.getId());
+  Logger.log(newFolder.getUrl());
+}
+```
+
+Create file inside folder
+
+```js
+function myFunction() {
+  var pFolder = DriveApp.getFolderById('1wetedDBJLVA2Vuiaf74wm1q0kgx95VDl');
+  var file = pFolder.createFile('text.txt', 'New Text File', MimeType.PLAIN_TEXT);
+
+  Logger.log(file.getId());
+  Logger.log(file.getUrl());
+}
+```
