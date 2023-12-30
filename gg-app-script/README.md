@@ -950,3 +950,39 @@ function getSheetData() {
     return "Data to client";
 }
 ```
+
+### Triggers onEdit or onChange
+
+- Add event handler
+
+```js
+function onChange() {
+    Logger.log('Changed content');
+}
+
+function onEdit() {
+    Logger.log('Edited content');
+}
+```
+
+- Add trigger: go to Apps Script Triggers
+
+## Google Script Sites
+
+### Publish Web App Google Script
+
+- Write `doGet` function
+
+```js
+function doGet() {
+   return HtmlService.createHtmlOutput('<h1>Hello World</h1>');
+}
+
+function doPost() {
+   return HtmlService.createHtmlOutput('<h1>Hello World</h1>');  
+}
+```
+
+- Deploy as Web App
+- `{URL}/exec`: prod
+- `{URL}/dev`: dev
