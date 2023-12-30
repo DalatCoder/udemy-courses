@@ -613,3 +613,69 @@ Find the word `HELLO` and change it to `HELLO WORLD`
     body.replaceText('{firstName}', 'Hieu');
     body.replaceText('{date}', Date());
 ```
+
+## Google Spreadsheet App
+
+[Doc](https://developers.google.com/apps-script/reference/spreadsheet/)
+
+### Standalone spreadsheet app
+
+Create new spreadsheet app
+
+```js
+function myFunction() {
+  var ss = SpreadsheetApp.create('Test 001');
+  Logger.log(ss.getUrl());
+}
+```
+
+### Create content and styling
+
+Open spreadsheet
+
+- Get range of content using notation `A1`, `B1`,...
+
+```js
+function myFunction() {
+    var ss = SpreadSheetApp.openById('');
+    Logger.log(ss.getName());
+
+    ss.getRange('A1').setBackgrounđ('red');
+    ss.getRange('B1').setBackgrounđ('blue');
+}
+```
+
+- Get range of content using row and column index
+
+```js
+function myFunction() {
+    var ss = SpreadSheetApp.openById('');
+    var sheet = ss.getSheets()[0];
+
+    var range = sheet.getRange(1, 1, 8).setBackground('green');
+    var range = sheet.getRange(1, 1, 8, 4).setBackground('yellow');
+}
+```
+
+- Exercise
+
+```js
+// function myFunction() {
+//   var ss = SpreadsheetApp.create('Test 001');
+//   Logger.log(ss.getUrl());
+//   Logger.log(ss.getId());
+// }
+
+
+function myFunction() {
+  var ssId = '';
+  var ss = SpreadsheetApp.openById(ssId);
+  var sheet = ss.getSheets()[0];
+
+  var cell = sheet.getRange('A1');
+  cell.setBackground('yellow');
+
+  var square = sheet.getRange(2, 1, 3, 3);
+  square.setBackground('orange');
+}
+```
