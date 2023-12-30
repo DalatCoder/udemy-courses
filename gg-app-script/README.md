@@ -1101,3 +1101,57 @@ function myFunction() {
   rootFolder.next().removeFile(file);
 }
 ```
+
+### Exercise WebApp Redirector
+
+```js
+function doGet(e){
+  if(typeof e === 'undefined'){
+    return false;
+  }
+  //{parameter={id=test}, contextPath=, contentLength=-1, queryString=id=test, parameters={id=[test]}}
+  var searchString = e.parameter.id;
+  var itemURL = searchTerm(searchString);
+  if(!itemURL){
+    return HtmlService.createHtmlOutput('Not Found');
+  }else{
+    var html = HtmlService.createTemplateFromFile('search');
+    html.data = {url:itemURL,term:searchString}
+    var output = html.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME);
+    return output;
+  }
+}
+
+function searchTerm(s){
+  var parFolder = '1Eov0auGT7GS2i1Il0dbdvyqzLr515M1s'; 
+  var folder = DriveApp.getFolderById(parFolder);
+  var result = folder.searchFolders('title contains "'+s+'"');
+  if(result.hasNext()){
+    var foundFolder = result.next();
+    var folderId = foundFolder.getId();
+    var folderURL = foundFolder.getUrl();
+    return folderURL;
+    
+  }
+  return false;
+  Logger.log(result);
+}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script>
+     var data = <?!= JSON.stringify(data) ?>;
+     console.log(data.url);
+     function redirector(){
+       document.getElementById('message').innerHTML = '<a href="'+data.url+'" target="_blank">'+data.term+'</a>';
+     }
+     window.onload = redirector;
+    </script>
+  </head>
+  <body>
+    <div id="message"></div>
+  </body>
+</html>
+```
