@@ -505,6 +505,8 @@ function myFunc1() {
 
 ### Content Selection Exercise
 
+Turn selected text to uppercase using `JS method`
+
 ```js
 function myFunc1() {
     var selection = DocumentApp.getActiveDocument().getSelection();
@@ -528,4 +530,86 @@ function myFunc1() {
         }
     }
 }
+```
+
+### DocumentApp exercise
+
+Find the word `HELLO` and change it to `HELLO WORLD`
+
+```js
+    var doc = DocumentApp.getActiveDocument();
+    var body = doc.getBody();
+    var finderContent = body.findText('HELLO');
+
+    while (finderContent != null) {
+        var outputContent = finderContent.getElement().editAsText();
+        var startPos = finderContent.getStartOffset();
+        var endPos = finderContent.getEndOffsetInclusive();
+
+        outputContent.insertText(endPos, ' WORLD');
+    }
+```
+
+### DocumentApp create content
+
+- Create table
+- Create paragraph
+- Create list items
+
+```js
+    var doc = DocumentApp.getActiveDocument();
+    var body = doc.getBody();
+
+    var data = [
+        ['First row', '2nd column', '3rd column'], 
+        ['Second row', '2nd column', '3rd column'], 
+        ['Third row', '2nd column', '3rd column']
+    ];
+
+    var table = body.appendTable(data);
+
+    var firstRow = table.getRow(0)
+    firstRow.editAsText().setBackgroundColor('#ffff00');
+
+    var heading = body.insertParagraph(0, doc.getName());
+    heading.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+
+    var listItem1 = body.appendListItem('First Item #1');
+    var listItem2 = body.appendListItem('First Item #2');
+    var listItem3 = body.appendListItem('First Item #3');
+    var listItem4 = listItem1.copy();
+    body.appendListItem(listItem4);
+
+    listItem2.clear();
+```
+
+### Insert image DocumentApp
+
+```js
+    var doc = DocumentApp.getActiveDocument();
+    var body = doc.getBody();
+    var imageUrl = '';
+
+    var myImage = UrlFetchApp.fetch(imageUrl);
+
+    body.appendImage(myImage.getBlob());
+```
+
+### DocumentApp template exercise
+
+```js
+    var doc = DocumentApp.getActiveDocument();
+    var body = doc.getBody();
+
+    // clear page
+    body.clear();
+
+    // insert placeholder
+    body.appendParagraph('Welcome to the page, {firstName}');
+    body.appendParagraph('Thanks for sharing');
+    body.appendParagraph('Ready on {date}');
+
+    // replace placeholder with real data
+    body.replaceText('{firstName}', 'Hieu');
+    body.replaceText('{date}', Date());
 ```
