@@ -1155,3 +1155,116 @@ function searchTerm(s){
   </body>
 </html>
 ```
+
+## Google GmailApp
+
+### Introduction
+
+Send mail
+
+```js
+function myFunction() {
+  GmailApp.sendEmail('hieu.ngxtr@gmail.com', 'Test Email', 'Hello World');
+}
+```
+
+Make draft email
+
+```js
+function myFunction() {
+  var file = DriveApp.getFileById('');
+  var mailObject = {
+    attachments: [file.getAs(MimeType.PDF)],
+    name: 'My Doc as PDF'
+  };
+
+  var toEmail = 'hieu.ngxtr@gmail.com';
+  var subject = 'Test Email';
+  var content = 'Hello World';
+
+  GmailApp.createDraft(toEmail, subject, content, mailObject);
+}
+```
+
+Get Draft Email
+
+```js
+function myFunction() {
+  var drafts = GmailApp.getDrafts();
+  
+  for (var x = 0; x < drafts.length; x++) {
+    Logger.log(drafts[x]);
+
+    var body = drafts[x].getMessage().getBody();
+    var subject = drafts[x].getMessage().getSubject();
+
+    Logger.log(body);
+    Logger.log(subject);
+  }
+}
+```
+
+Send out a bunch of emails
+
+```js
+function myFunction() {
+  GmailApp.sendEmail('gappscourses@gmail.com', 'test email', 'Hello World')
+}
+function makeDraft(){
+  var file = DriveApp.getFileById('1tEsnMRa2jRV9S2WzuTV2abpJNrr-s7tohE0gGyRux-A');
+  GmailApp.createDraft('gappscourses@gmail.com', 'Test PDF', 'Check out the attachment',{
+    attachments: [file.getAs(MimeType.PDF)],
+    name:'My Doc as PDF'
+  } );
+}
+function seeDraft(){
+  var draft = GmailApp.getDrafts();
+  for(var x=0;x<draft.length;x++){
+    //draft[x].update('gappscourses@gmail.com', 'Updated '+x, 'Hello world'+x);
+    var id = draft[x].getId();
+    Logger.log(id)
+    Logger.log(draft[x].getMessage().getBody());
+    Logger.log(draft[x].getMessage().getSubject());
+  }
+  Logger.log(draft);
+}
+function sendHTMLTemp(){
+  var emailMessage = HtmlService.createHtmlOutputFromFile('email').getContent();
+  emailMessage = emailMessage.replace('#TITLE', 'New String Value');
+  emailMessage = emailMessage.replace('#MESSAGE', 'Replaced with new message');
+  MailApp.sendEmail('gappscourses@gmail.com', 'New email Temp', '',{
+    htmlBody:emailMessage
+  })
+  Logger.log(emailMessage);
+}
+function sendTemp(arr,x){
+  var emailMessage = HtmlService.createHtmlOutputFromFile('email').getContent();
+  emailMessage = emailMessage.replace('#TITLE', 'Bulk Mailer Tester');
+  emailMessage = emailMessage.replace('#MESSAGE', arr[3]);
+  emailMessage = emailMessage.replace('#FIRST', arr[0]);
+  emailMessage = emailMessage.replace('#LAST', arr[1]);
+  MailApp.sendEmail(arr[2], 'Email Value'+x, '',{
+    htmlBody:emailMessage
+  })
+  Logger.log(emailMessage);
+  return true;
+}
+function bulkEmails(){
+  var sheet = SpreadsheetApp.openById('1IaLf8gt5-BdK_wfLmYW07QXuHFu8QZA3W42vr1mxQLA').getSheetByName('Sheet1');
+  var range = sheet.getRange(2,1,sheet.getLastRow()-1,sheet.getLastColumn());
+  var value = range.getValues();
+  //range.sort({column:1,ascending:true})
+  for(var x=0;x<value.length;x++){
+   Logger.log(value[x]); 
+    var row = 2+x;
+    var rep = sendTemp(value[x],x);
+    sheet.getRange(row, 5, 1, 2).setValues([[rep,Date()]])
+  }
+}
+<div style="color:red;background:blue;">
+<h2>#TITLE</h2>
+<hr>
+<p>Welcome #FIRST #LAST</p>
+<p>#MESSAGE</p>
+</div>
+```
