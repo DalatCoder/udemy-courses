@@ -684,7 +684,7 @@ function myFunction() {
 
 ```js
 function myFunction() {
-  var ssId = '16JHeye-uj_zH7t-EWynEeEtz0B5nsLYNlFj0xRL40Jg';
+  var ssId = '';
   var ss = SpreadsheetApp.openById(ssId);
   var sheet = ss.getSheets()[0];
 
@@ -694,3 +694,84 @@ function myFunction() {
   cell.setValue('Hieu Nguyen Trong');
   Logger.log(cell.getValue());
 }
+```
+
+### Spreadsheet data to Doc table
+
+- Open spreadsheet
+- Get values in range
+- Create new document
+- Write data to new document
+
+```js
+function myFunction() {
+  var ssId = '16JHeye-uj_zH7t-EWynEeEtz0B5nsLYNlFj0xRL40Jg';
+  var ss = SpreadsheetApp.openById(ssId);
+
+  if (!ss) {
+    Logger.log('Error when opening spreadsheet');
+    return 
+  }
+
+  var sheet = ss.getSheets()[0];
+
+  var doc = DocumentApp.create('Export sheets data');
+  var body = doc.getBody();
+  
+  var rowData = sheet.getRange(1, 1, 3, 3).getValues();
+  Logger.log('Read spreadsheet data succeed');
+
+  var docHeading = 'Sheet Name: ' + ss.getName();
+
+  body
+    .insertParagraph(0, docHeading)
+    .setHeading(DocumentApp.ParagraphHeading.HEADING1);
+
+  body
+    .insertParagraph(1, 'Exported at: ' + Date()) 
+    .appendHorizontalRule();
+
+  var table = body.appendTable(rowData);
+  table.getRow(0).editAsText().setBold(true);
+
+  Logger.log('Export success to docs at: ' + doc.getUrl());
+}
+```
+
+### Spreadsheet data dynamic
+
+- `sheet.getLastRow()`
+- `sheet.getLastColumn()`
+
+```js
+function myFunction() {
+  var ssId = '16JHeye-uj_zH7t-EWynEeEtz0B5nsLYNlFj0xRL40Jg';
+  var ss = SpreadsheetApp.openById(ssId);
+  var sheet = ss.getSheets()[0];
+
+  var docId = '145l50g7ZclpnfSc3XUDs3ReHcaAl99VyGig_cMc3MO4';
+  var doc = DocumentApp.openById(docId);
+  var body = doc.getBody();
+
+  body.clear();
+
+  var rowData = sheet
+    .getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn())
+    .getValues();
+
+  Logger.log(rowData);
+
+  var docHeading = 'Sheet Name: ' + ss.getName();
+
+  body
+    .insertParagraph(0, docHeading)
+    .setHeading(DocumentApp.ParagraphHeading.HEADING1);
+
+  body
+    .insertParagraph(1, 'Exported at: ' + Date()) 
+    .appendHorizontalRule();
+
+  var table = body.appendTable(rowData);
+  table.getRow(0).editAsText().setBold(true);
+}
+```
