@@ -775,3 +775,17 @@ function myFunction() {
   table.getRow(0).editAsText().setBold(true);
 }
 ```
+
+### From one spreadsheet to another
+
+```js
+function myFunction() {
+  var ssId = '16JHeye-uj_zH7t-EWynEeEtz0B5nsLYNlFj0xRL40Jg';
+  var ss = SpreadsheetApp.openById(ssId);
+
+  var sheet1 = ss.getSheets()[1];
+  var newSpreadSheet = SpreadsheetApp.create('New');
+
+  sheet1.copyTo(newSpreadSheet);
+}
+```
