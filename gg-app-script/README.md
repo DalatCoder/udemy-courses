@@ -1052,3 +1052,29 @@ function myFunction() {
   Logger.log(file.getUrl());
 }
 ```
+
+### List folders and write to sheet
+
+```js
+function myFunction() {
+  var ss = SpreadsheetApp.openById('1ljBobBqtbXJGfNTNH_KMj7B2yASF342ZnIAuKGC5UII');
+  var sheet = ss.getSheets()[0];
+
+  sheet.clear();
+  sheet.appendRow(['No.', 'Name', 'ID', 'URL', 'Date Created']);
+
+  var pFolder = DriveApp.getFolderById('1wetedDBJLVA2Vuiaf74wm1q0kgx95VDl');
+  var folders = pFolder.getFolders();
+
+  var count = 1;
+  while(folders.hasNext()) {
+    var folder = folders.next();
+
+    sheet.appendRow([count, folder.getName(), folder.getId(), folder.getUrl(), folder.getDateCreated()]);
+
+    count += 1;
+  }
+
+  sheet.appendRow([`Last run on: ${Date()}`]);
+}
+```
