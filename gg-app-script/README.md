@@ -1355,3 +1355,126 @@ function bulkEmails(){
   }
 }
 ```
+
+## Calendar App Class
+
+## Image Uploader Project
+
+### HTML content service
+
+Render HTML page (Web client page)
+
+```js
+function doGet() {
+  var output = '<h1>Hello World</h1>';
+  var html = HtmlService.createHtmlOutput(output);
+  return html;
+}
+```
+
+HTML template
+
+```js
+function doGet() {
+  var template = HtmlService.createTemplate('<?= foo ?>');
+  template.foo = 'Hello World###';
+  return template.evaluate();
+}
+```
+
+HTML content from file
+
+```js
+function doGet() {
+  var output = HtmlService.createHtmlOutputFromFile('index');
+  return output;
+}
+```
+
+HTML template from file
+
+- Template file
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <h1><?= foo ?></h1>
+  </body>
+</html>
+```
+
+- Script file
+
+```js
+function doGet() {
+  var template = HtmlService.createTemplateFromFile('index');
+
+  template.foo = 'Hello World!!!';
+  return template.evaluate();
+}
+```
+
+### Create HTML form
+
+### Send data to Google Script Backendo
+
+Using `Client-side API` service
+
+- Add script on the client side
+
+```html
+<script>
+    var output = document.getElementById('output');
+
+    document.getElementById('btn-submit').addEventListener('click', function(e) {
+        e.preventDefault();
+        output.innerHTML = 'Clicked';
+
+        // invoke backend function
+        const postData = {
+            fileName: ''
+        };
+
+        google.script.run.doUpload(postData);
+    })
+</script>
+```
+
+- Write handler on server side
+
+```js
+function doUpload(postData) {
+  Logger.log('Get request');
+  Logger.log(postData);
+}
+```
+
+- Add success handler on the client side
+
+```html
+<script>
+    var output = document.getElementById('output');
+
+    document.getElementById('btn-submit').addEventListener('click', function(e) {
+        e.preventDefault();
+        output.innerHTML = 'Clicked';
+
+        // invoke backend function
+        const postData = {
+            fileName: ''
+        };
+
+        google.script.run
+            .withSuccessHandler(onSuccess)
+            .doUpload(postData);
+    });
+
+    function onSuccess(data) {
+        output.innerHTML = JSON.stringify(data);
+    }
+</script>
+```
