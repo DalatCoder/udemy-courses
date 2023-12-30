@@ -679,3 +679,18 @@ function myFunction() {
   square.setBackground('orange');
 }
 ```
+
+### Get and set values
+
+```js
+function myFunction() {
+  var ssId = '16JHeye-uj_zH7t-EWynEeEtz0B5nsLYNlFj0xRL40Jg';
+  var ss = SpreadsheetApp.openById(ssId);
+  var sheet = ss.getSheets()[0];
+
+  var cell = sheet.getRange('A1');
+  Logger.log(cell.getValue());
+
+  cell.setValue('Hieu Nguyen Trong');
+  Logger.log(cell.getValue());
+}
