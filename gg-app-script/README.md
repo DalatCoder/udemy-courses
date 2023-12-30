@@ -930,3 +930,23 @@ function myFunction4() {
   }
 }
 ```
+
+### Communicate between gg sheet client and app script services
+
+```js
+// client side
+
+google.script.run.withSuccessHandler(onSuccess).getSheetData(data);
+
+function onSuccess(data) {
+    console.log(data);
+}
+```
+
+```js
+// server side | apps script
+
+function getSheetData() {
+    return "Data to client";
+}
+```
