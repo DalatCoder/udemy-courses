@@ -462,3 +462,70 @@ Translate the selection text
     var spanish = LanguageApp.translate(output, 'en', 'es');
     DocumentApp.getUi().alert('Translated to Spanish: ' + spanish);
 ```
+
+Search content and replace
+
+```js
+function myFunc1() {
+    var body = DocumentApp.getActiveDocument().getBody();
+    var ui = DocumentApp.getUi();
+
+    var response = ui.prompt('Search', 'What did you want to find?', ui.ButtonSet.OK_CANCEL);
+    if (response.getResponseText()) {
+        var replacer = ui.prompt('Replace', 'Replace with what?', ui.ButtonSet.OK_CANCEL);
+        body.replaceText(response.getResponseText(), replacer.getResponseText());
+    }
+}
+```
+
+Find content update attributes
+
+```js
+function myFunc1() {
+    var body = DocumentApp.getActiveDocument().getBody();
+    var ui = DocumentApp.getUi();
+
+    var response = ui.prompt('Search', 'What did you want to find?', ui.ButtonSet.OK_CANCEL);
+    if (response.getResponseText()) {
+        var finderContent = body.findText(response.getResponseText());
+        Logger.log(finderContent);
+
+        var foundText = finderContent.getElement().asText();
+        Logger.log(foundText);
+
+        var outputContent = finderContent.getElement().editAsText();
+        Logger.log(outputContent);
+
+        var startPos = finderContent.getStartOffset();
+        var endPos = finderContent.getEndOffsetInclusive();
+        outputContent.setForegroundColor(startPos, endPos, '#00FFFF');
+    }
+}
+```
+
+### Content Selection Exercise
+
+```js
+function myFunc1() {
+    var selection = DocumentApp.getActiveDocument().getSelection();
+
+    if (selection) {
+        var el = selection.getRangeElements();
+
+        for (var x = 0; x < el.length; x++) {
+            var textSelected = el[x].getElement().editAsText();
+
+            if (el[x].isPartial()) {
+                var startPos = el[x].getStartOffset();
+                var endPos = el[x].getEndOffsetInclusive();
+
+                var selText = textSelected.getText().substring(startPos, endPos);
+                textSelected.deleteText(startPos, endPos);
+                textSelected.insertText(startPos, selText.toUpperCase());
+            } else {
+                textSelected.setText(textSelected.getText().toUpperCase());
+            }
+        }
+    }
+}
+```
