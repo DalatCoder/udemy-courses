@@ -817,3 +817,67 @@ function ISEMAIL(input) {
   return re.test(input);
 }
 ```
+
+### UI menu options
+
+- Inject code to `onOpen` `hook`
+
+```js
+function onOpen(e) {
+  SpreadsheetApp
+    .getUi() 
+    .createMenu('Advanced')
+    .addItem('Welcome', 'myFunction1')
+    .addSeparator()
+    .addToUi();
+}
+
+function myFunction1() {
+  var ui = SpreadsheetApp.getUi();
+
+  var response = ui.prompt('Getting to know you', 'May I know your name?', ui.ButtonSet.YES_NO);
+  ui.alert('Hello ' + response.getResponseText());
+}
+```
+
+Show modal and sidebar
+
+```js
+function onOpen(e) {
+  SpreadsheetApp
+    .getUi() 
+    .createMenu('Advanced')
+    .addItem('Welcome', 'myFunction1')
+    .addSeparator()
+    .addItem('Open Modal', 'myFunction2')
+    .addItem('Open Sidebar', 'myFunction3')
+    .addToUi();
+}
+
+function myFunction1() {
+  var ui = SpreadsheetApp.getUi();
+
+  var response = ui.prompt('Getting to know you', 'May I know your name?', ui.ButtonSet.YES_NO);
+  ui.alert('Hello ' + response.getResponseText());
+}
+
+function myFunction2() {
+  var ui = SpreadsheetApp.getUi();
+  var html = HtmlService
+                .createHtmlOutput('<h1>Welcome</h1>')
+                .setHeight(400)
+                .setWidth(600);
+  
+  var response = ui.showModalDialog(html, 'Modal popup');
+}
+
+function myFunction3() {
+  var ui = SpreadsheetApp.getUi();
+  var html = HtmlService
+                .createHtmlOutput('<h1>Welcome</h1>')
+                .setHeight(400)
+                .setWidth(600);
+  
+  var response = ui.showSidebar(html);
+}
+```
