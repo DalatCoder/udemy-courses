@@ -1792,3 +1792,90 @@ function sendHTMLEmail(data) {
   });
 }
 ```
+
+## Contact form
+
+### Setup triggers
+
+```js
+function doGet() {
+  var now = new Date();
+  Logger.log(now.toString());
+
+  return ContentService.createTextOutput(now.toString());
+}
+
+function doPost() {
+  var now = new Date();
+  Logger.log(now.toString());
+
+  return ContentService.createTextOutput(now.toString());
+}
+```
+
+### Get data parameters
+
+```js
+function doGet(e) {
+  //  {
+  //      parameter={id=1, name=hieu}, 
+  //      parameters={name=[hieu], id=[1]}, 
+  //      contextPath=, 
+  //      contentLength=-1.0, 
+  //      queryString=id=1&name=hieu
+  //  }
+
+  // https://script.google.com/macros/s/AKfycbxkCIl14Xb2TgzCJLDnuwbAHo9DMvNSxT-E_z07_SuS/dev
+
+  Logger.log(e);
+  var obj = {
+    params: e.parameter,
+    status: 200,
+    value: 'Hello World'
+  };
+
+  return ContentService.createTextOutput(JSON.stringify(obj));
+}
+
+function doPost(e) {
+  var now = new Date();
+  Logger.log(now.toString());
+}
+```
+
+### Source
+
+```js
+function doPost(e) {
+  var ss = SpreadsheetApp.openById('1jMp6UaFJgoKj2a5Wx4_qEj_OphOyxPCtLsONKOtFh10');
+  var sheet = ss.getSheets()[0];
+  var rows = sheet.getDataRange().getValues();
+
+  // [id, timestamp, name, email, message]
+  var headings = rows[0].map(k => k.toLowerCase());
+
+  var holder = [];
+  var newId = (new Date().getTime()).toString(36);
+
+  e.parameter.id = newId;
+  e.parameter.timestamp = new Date();
+
+  for (var x in headings) {
+    var key = headings[x];
+    var value = e.parameter[key] || 'none';
+
+    holder.push(value);
+  }
+
+  sheet.appendRow(holder);
+
+  var obj = {
+    params: e.parameter,
+    status: 'success',
+    code: 200,
+    value: newId
+  };
+
+  return ContentService.createTextOutput(JSON.stringify(obj));
+}
+```
