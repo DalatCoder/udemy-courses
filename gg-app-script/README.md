@@ -1879,3 +1879,259 @@ function doPost(e) {
   return ContentService.createTextOutput(JSON.stringify(obj));
 }
 ```
+
+## PDF Uploader
+
+### Set up web client
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PDF Uploader</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-5 text-center">PDF Uploader</h1>
+
+      <form id="form">
+        <div class="mb-3">
+          <label for="file" class="form-label">PDF File</label>
+          <input class="form-control" type="file" id="file" name="file">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <script>
+      const form = document.getElementById('form');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        google.script.run.withSuccessHandler(onSuccess).doUpload(form);
+      })
+
+      function onSuccess(info) {
+        console.log(info);
+      }
+    </script>
+  </body>
+</html>
+```
+
+### Set up apps script
+
+```js
+function doGet(e) {
+  var html = HtmlService.createTemplateFromFile('index');
+  return html.evaluate();
+}
+
+function doUpload(data) {
+  var filePDF = data.file; 
+
+  var res = {
+    url: '',
+    msg: 'File is not valid',
+    status: 'fail'
+  };
+
+  if (filePDF.getContentType() == 'application/pdf') {
+    var folder = DriveApp.getFolderById('1SkZM1YNGlqGk-iUPwvuApzsrkblIUbhF');
+    var pdf = folder.createFile(filePDF);
+
+    res.url = pdf.getUrl();
+    res.msg = 'success'
+    res.status = 'success'
+  }
+
+  return ContentService.createTextOutput(JSON.stringify(res)).getContent();
+}
+```
+
+## File Upload With Base64
+
+Client code
+
+```html
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+
+        <h1 class="text-center my-5">Contact Form</h1>
+
+        <form id="form">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="">
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" rows="3" name="message" value=""></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">Attachment</label>
+                <input class="form-control" type="file" id="file" name="file">
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-submit">Submit</button>
+        </form>
+
+        <p id="output" class="my-3"></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <script>
+        const form = document.getElementById('form');
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbxG3w2e6furFgGLg6Yw7Az8wefddPCe5o28YL6LKUsqIqNEOcb5cDsfGvHu4Gi1_RT23w/exec';
+        const btnSubmit = document.getElementById('btn-submit')
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const fileList = document.getElementById('file').files;
+
+            const requestObject = {
+                name: name,
+                email: email,
+                message: message,
+                file: null
+            }
+
+            if (fileList.length > 0) {
+                const file = fileList[0];
+
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+
+                reader.onloadend = function (e) {
+                    const data = e.target.result.split(",");
+                    requestObject.file = {
+                        fileName: file.name,
+                        mimeType: data[0].match(/:(\w.+);/)[1],
+                        data: data[1]
+                    };
+
+                    sendRequest(requestObject)
+                }
+            }
+            else {
+                sendRequest(requestObject)
+            }
+        })
+
+        function sendRequest(requestData) {
+            btnSubmit.setAttribute('disabled', 'disabled')
+            btnSubmit.innerHTML = 'Sending...'
+
+            fetch(apiUrl, {
+                method: 'POST',
+                body: JSON.stringify(requestData)
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log('data', data)
+                    let msg = '';
+
+                    if (data.status === 'success') {
+                        msg = 'You email has been received - Ticket ID #' + data.value
+                        form.reset();
+                    } else {
+                        msg = 'Oooops something went wrong'
+                    }
+
+                    document.getElementById('output').innerHTML = msg
+
+                    btnSubmit.removeAttribute('disabled')
+                    btnSubmit.innerHTML = 'Submit'
+                })
+                .catch(function (err) {
+                    console.error('err', err)
+
+                    btnSubmit.removeAttribute('disabled')
+                    btnSubmit.innerHTML = 'Submit'
+                })
+        }
+    </script>
+</body>
+
+</html>
+```
+
+Apps script
+
+```js
+function doPost(e) {
+  var ss = SpreadsheetApp.openById('1jMp6UaFJgoKj2a5Wx4_qEj_OphOyxPCtLsONKOtFh10');
+  var sheet = ss.getSheets()[0];
+  var rows = sheet.getDataRange().getValues();
+  var headings = rows[0].map(k => k.toLowerCase());
+
+  // [id, timestamp, name, email, message]
+
+  var holder = [];
+  var newId = (new Date().getTime()).toString(36);
+
+  var postData = JSON.parse(e.postData.contents);
+
+  postData.id = newId;
+  postData.timestamp = new Date();
+
+  if (postData.file) {
+    var blob = Utilities.newBlob(Utilities.base64Decode(postData.file.data), postData.file.mimeType, postData.file.fileName);
+
+    var folder = DriveApp.getFolderById('1oolt9BcKb2kdxkTw7pkLhx65SfpEGe6a');
+    var file = folder.createFile(blob);
+
+    postData.attachment = file.getUrl();
+  }
+
+  for (var x in headings) {
+    var key = headings[x];
+    var value = postData[key] || 'none';
+
+    holder.push(value);
+  }
+
+  sheet.appendRow(holder);
+
+  var obj = {
+    params: postData,
+    status: 'success',
+    code: 200,
+    value: newId,
+    e
+  };
+
+  return ContentService.createTextOutput(JSON.stringify(obj));
+}
+```

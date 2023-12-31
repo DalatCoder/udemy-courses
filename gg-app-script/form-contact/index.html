@@ -27,6 +27,10 @@
                 <label for="message" class="form-label">Message</label>
                 <textarea class="form-control" id="message" rows="3" name="message" value=""></textarea>
             </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">Attachment</label>
+                <input class="form-control" type="file" id="file" name="file">
+            </div>
 
             <button type="submit" class="btn btn-primary" id="btn-submit">Submit</button>
         </form>
@@ -40,7 +44,7 @@
 
     <script>
         const form = document.getElementById('form');
-        const apiUrl = 'https://script.google.com/macros/s/AKfycbw_0RjwjeGgHTaSE7fDg7F5ymfJJEy54CWqpCeZBRoaqELbpyrpy9Gj7geev6MlZOmoSQ/exec';
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbxG3w2e6furFgGLg6Yw7Az8wefddPCe5o28YL6LKUsqIqNEOcb5cDsfGvHu4Gi1_RT23w/exec';
         const btnSubmit = document.getElementById('btn-submit')
 
         form.addEventListener('submit', function (e) {
@@ -49,23 +53,50 @@
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const message = document.getElementById('message').value;
+            const fileList = document.getElementById('file').files;
 
-            const formData = new FormData();
-            formData.append('name', name)
-            formData.append('email', email)
-            formData.append('message', message)
+            const requestObject = {
+                name: name,
+                email: email,
+                message: message,
+                file: null
+            }
 
+            if (fileList.length > 0) {
+                const file = fileList[0];
+
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+
+                reader.onloadend = function (e) {
+                    const data = e.target.result.split(",");
+                    requestObject.file = {
+                        fileName: file.name,
+                        mimeType: data[0].match(/:(\w.+);/)[1],
+                        data: data[1]
+                    };
+
+                    sendRequest(requestObject)
+                }
+            }
+            else {
+                sendRequest(requestObject)
+            }
+        })
+
+        function sendRequest(requestData) {
             btnSubmit.setAttribute('disabled', 'disabled')
             btnSubmit.innerHTML = 'Sending...'
 
             fetch(apiUrl, {
                 method: 'POST',
-                body: formData
+                body: JSON.stringify(requestData)
             })
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (data) {
+                    console.log('data', data)
                     let msg = '';
 
                     if (data.status === 'success') {
@@ -86,7 +117,7 @@
                     btnSubmit.removeAttribute('disabled')
                     btnSubmit.innerHTML = 'Submit'
                 })
-        })
+        }
     </script>
 </body>
 
