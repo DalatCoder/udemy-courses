@@ -1499,11 +1499,6 @@ Setup form on client side
 
       <form id='form'>
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-        </div>
-        <div class="mb-3">
           <label for="formFile" class="form-label">Select picture</label>
           <input class="form-control" type="file" id="formFile" name="file">
         </div>
@@ -1559,5 +1554,213 @@ function doUpload(postData) {
   };
 
   return response;
+}
+```
+
+Tweak client side UI
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container">
+
+      <h1 class="my-5">Image Uploader</h1>
+
+      <form id='form'>
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Select picture</label>
+          <input class="form-control" type="file" id="formFile" name="file">
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-submit">Submit</button>
+      </form>
+
+      <hr />
+
+      <p id="output"></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <script>
+      var output = document.getElementById('output');
+      var formEl = document.getElementById('form');
+
+      document.getElementById('btn-submit').addEventListener('click', function(e) {
+        e.preventDefault();
+        output.innerHTML = 'Uploading...';
+
+        // invoke backend function
+        google.script.run
+          .withSuccessHandler(onSuccess)
+          .doUpload(formEl);
+      });
+
+      function onSuccess(data) {
+        output.innerHTML = JSON.stringify(data);
+
+        if (data.status === 'success') {
+          output.innerHTML = 'Upload succeed';
+
+          var aEl = document.createElement('a');
+          aEl.href = data.url;
+          aEl.target = 'blank';
+          aEl.innerHTML = data.url;
+
+          output.insertAdjacentElement('afterend', aEl);
+        }
+      }
+    </script>
+  </body>
+</html>
+```
+
+### Spreadsheet App tracking uploads
+
+```js
+function doGet() {
+  var template = HtmlService.createTemplateFromFile('index');
+
+  template.foo = 'Hello World!!!';
+  return template.evaluate();
+}
+
+function doUpload(postData) {
+  // get post data
+  var fileImage = postData.file;
+
+  // send file to google drive
+  var folder = DriveApp.getFolderById('12ISU6xMfGsDzfSQjBZWeejAqfxcKMAi0');
+  var image = folder.createFile(fileImage);
+
+  // tracking upload
+  var ss = SpreadsheetApp.openById('1qOUV_6wkJaaC1rK-GMst76xQKa1MnsYxGk1YVyBQSQ4');
+  var sheet = ss.getSheetByName('sheet1');
+  sheet.appendRow([image.getUrl(), image.getName(), Date()]);
+
+  var response = {
+    'url': image.getUrl(),
+    'status': 'success'
+  };
+
+  return response;
+}
+```
+
+### Send email notification
+
+```js
+function doGet() {
+  var template = HtmlService.createTemplateFromFile('index');
+
+  template.foo = 'Hello World!!!';
+  return template.evaluate();
+}
+
+function doUpload(postData) {
+  // get post data
+  var fileImage = postData.file;
+
+  // send file to google drive
+  var folder = DriveApp.getFolderById('12ISU6xMfGsDzfSQjBZWeejAqfxcKMAi0');
+  var image = folder.createFile(fileImage);
+
+  // tracking upload
+  var ss = SpreadsheetApp.openById('1qOUV_6wkJaaC1rK-GMst76xQKa1MnsYxGk1YVyBQSQ4');
+  var sheet = ss.getSheetByName('sheet1');
+  sheet.appendRow([image.getUrl(), image.getName(), Date()]);
+
+  // send notification email
+  var recipent = 'hieu.nth999@gmail.com';
+  var subject = 'New Image Uploaded';
+  var body = HtmlService 
+              .createHtmlOutput(`
+                <h1>Image uploaded succeed</h1>
+                <p>Upload time: ${Date()}</p>
+                <p>View at:
+                  <a 
+                    href="${image.getUrl()}" 
+                    target="blank"
+                  >
+                    ${image.getUrl()}
+                  </a>
+                </p>
+              `)
+              .getContent();
+
+  MailApp.sendEmail({
+    to: recipent,
+    subject: subject,
+    htmlBody: body
+  });
+
+  // response to client
+  var response = {
+    'url': image.getUrl(),
+    'status': 'success'
+  };
+
+  return response;
+}
+```
+
+## Form auto email responder
+
+### Setup
+
+Overview project:
+
+- Create simple form with email address field
+- Link form responses to Google Sheet
+- Add trigger and send back notification to the email address when user submitting the form
+
+### Spreadsheet bound script
+
+- Open spreadsheet app
+- Create bound script
+- Setup trigger handler
+- Setup trigger
+
+```js
+function onFormSubmit(e) {
+  Logger.log('Submitted');
+  Logger.log(e);
+}
+```
+
+Add trigger:
+
+- Choose handler function
+- Select event source: From spreadsheet
+- Select event type: on form submit
+
+### Setup email to send
+
+```js
+function onFormSubmit(e) {
+  sendHTMLEmail(e.values);
+}
+
+function sendHTMLEmail(data) {
+  var emailHTML = HtmlService.createHtmlOutputFromFile('email').getContent();
+
+  var date = data[0];
+  var name = data[1];
+  var email = data[2];
+  var group = data[3];
+
+  emailHTML = emailHTML.replace('#DATE', date);
+  emailHTML = emailHTML.replace('#GROUP', group);
+  emailHTML = emailHTML.replace('#NAME', name;
+
+  MailApp.sendEmail(email, 'Form notification', '', {
+    htmlBody: emailHTML
+  });
 }
 ```
