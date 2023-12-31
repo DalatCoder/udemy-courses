@@ -1764,3 +1764,31 @@ function sendHTMLEmail(data) {
   });
 }
 ```
+
+### HTML to PDF and attach it
+
+```js
+function onFormSubmit(e) {
+  sendHTMLEmail(e.values);
+}
+
+function sendHTMLEmail(data) {
+  var emailHTML = HtmlService.createHtmlOutputFromFile('email').getContent();
+
+  emailHTML = emailHTML.replace('#DATE', data[0]);
+  emailHTML = emailHTML.replace('#GROUP', data[3]);
+  emailHTML = emailHTML.replace('#NAME', data[1]);
+
+  var blob = HtmlService.createHtmlOutput(emailHTML);
+  var pdf = blob.getAs('application/pdf');
+  var newName = data[1].replace(/[^A-Z0-9]/ig, '_');
+  pdf.setName(newName);
+
+  // DriveApp.createFile(blob);
+
+  MailApp.sendEmail(data[2], 'Form notification', '', {
+    htmlBody: emailHTML,
+    attachments: [pdf]
+  });
+}
+```
